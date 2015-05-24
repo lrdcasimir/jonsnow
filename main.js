@@ -3,7 +3,11 @@ var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
 fs.readFile("./gmail-app-passwd", function(e, appPasswd){
-  var transport = nodemailer.createTransport(smtpTransform({
+  if(e){
+    console.log(e);
+    return;
+  }
+  var transport = nodemailer.createTransport(smtpTransport({
     service: "gmail",
     auth: {
       user: "tyler.v@gmail.com",
@@ -12,6 +16,7 @@ fs.readFile("./gmail-app-passwd", function(e, appPasswd){
   }));
   var knownCaptures = {};
   var watcher = fs.watch('/tmp/motion', {persistent: true});
+  console.log("Watching /tmp/motion");
   watcher.on('change', function(e, filename){
       fs.readdir(function(e,files){
         var newMpgFiles = files.filter(function(f){
@@ -36,11 +41,9 @@ fs.readFile("./gmail-app-passwd", function(e, appPasswd){
                console.log("Text message sent");
               }
             });
-            }
           });
         }
       });
-    }
   });
 })
 
