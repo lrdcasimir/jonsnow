@@ -20,10 +20,11 @@ fs.readFile("./gmail-app-passwd", function(e, appPasswd){
   watcher.on('change', function(e, filename){
       fs.readdir(function(e,files){
         var newMpgFiles = files.filter(function(f){
-          return f.indexOf('mpg') > -1 && !knownCaptures[f];
+          return f.indexOf('avi') > -1 && !knownCaptures[f];
         });
         if(newMpgFiles.length > 0){
           newMpgFiles.forEach(function(f){
+            knownCaptures[f] = true;
             var mailOptions = {
              attachments: [
               {

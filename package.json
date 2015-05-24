@@ -1,6 +1,7 @@
 {
   "dependencies":
     {
+      "forever": "latest",
       "nodemailer": "latest",
       "nodemailer-smtp-transport":"latest"
     },
