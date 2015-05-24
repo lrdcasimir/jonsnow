@@ -14,22 +14,31 @@ fs.readFile("./gmail-app-passwd", function(e, appPasswd){
       pass: appPasswd
     }
   }));
+  
   var knownCaptures = {};
+  fs.readFile('./known-capture-index',function(e,data){
+    if(!e){
+      knownCaptures = JSON.parse(data);
+    } 
+  })
   var watcher = fs.watch('/tmp/motion', {persistent: true});
   console.log("Watching /tmp/motion");
   watcher.on('change', function(e, filename){
-      fs.readdir(function(e,files){
+      fs.readdir('/tmp/motion/',function(e,files){
         var newMpgFiles = files.filter(function(f){
-          return f.indexOf('avi') > -1 && !knownCaptures[f];
+          return f.indexOf('jpg') > -1 && !knownCaptures[f];
         });
         if(newMpgFiles.length > 0){
+          var knownCaptureIndex = fs.createWriteStream('./known-capture-index');
+          knownCaptureIndex.end(JSON.stringify(knownCaptures));
           newMpgFiles.forEach(function(f){
             knownCaptures[f] = true;
             var mailOptions = {
              attachments: [
               {
-               fileName:"capture.mpg",
-               filePath:"/tmp/motion/"+f
+               contentType:"image/jpeg",
+               filename:"capture.jpg",
+               path:"/tmp/motion/"+f
               }
              ],
              from:"tyler.v@gmail.com",
@@ -39,7 +48,7 @@ fs.readFile("./gmail-app-passwd", function(e, appPasswd){
               if(e){
                console.error(e);
               } else {
-               console.log("Text message sent");
+               console.log("Text message sent /tmp/motion/"+ f);
               }
             });
           });
