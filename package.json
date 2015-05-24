@@ -1,0 +1,9 @@
+{
+  "dependencies":
+    {
+      "nodemailer": "latest",
+      "nodemailer-smtp-transport":"latest"
+    },
+   "name":"jonsnow",
+   "description":"The watcher on the walls"
+}
