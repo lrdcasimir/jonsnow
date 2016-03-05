@@ -42,19 +42,20 @@ fs.readFile("./gmail-app-passwd", function(e, appPasswd){
               }
              ],
              from:"tyler.v@gmail.com",
-             to:"2067472820@mms.att.net"
+             to:"2067472820@mms.att.net,4252394186@mms.att.net"
             };
             transport.sendMail(mailOptions,function(e,response){
               if(e){
                console.error(e);
               } else {
                console.log("Text message sent /tmp/motion/"+ f);
+               fs.unlink("/tmp/motion/"+f,function(e){
+                console.error(e);
+               });
               }
             });
           });
         }
       });
   });
-})
-
-
+});
